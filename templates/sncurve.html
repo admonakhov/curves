@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Кривая усталости
+{% endblock %}
+
+{% block body %}
+<form method="post">
+    <h2>Введите данные:</h2>
+    <table class="input">
+        <tr>
+            <td>
+                <p> Напряжение: </p>
+            </td>
+            <td>
+               <p> <input type="number" name="stress" id="stress"></p>
+            </td>
+            <td>
+                <p> Долговечность: </p>
+            </td>
+            <td>
+                <p><input type="number" name="count" id="count"></p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <p><button type="submit" name="add" id="add">Добавить</button></p>
+            </td>
+            <td>
+                <p><button type="submit" name="load" id="load">Выгрузить файл</button></p>
+            </td>
+            <td>
+                <p><button type="submit" name="reset" id="reset">Очистить</button></p>
+            </td>
+        </tr>
+    </table>
+</form>
+<table>
+    <tr class="results">
+        <td width="50%">
+            <img class ="sn_plot" src="data:image/png;base64, {{ plot }}">
+        </td>
+        <td width="50%">
+            <form method="post">
+                <table class="sn_data">
+                    <tr class="sn_data">
+                        <th width="20px"></th>
+                        <th width="20px"></th>
+                        <th >Напряжение, МПа</th>
+                        <th>Долговечность, цикл</th>
+                    </tr>
+                        {% for i in lenght %}
+                      <tr class="sn_data">
+                        <td><input type="checkbox" id={{i}} name={{i}}></td>
+                        <td>{{ (i+1) }}</td>
+                        <td>{{ stress[i] }}</td>
+                        <td>{{ count[i] }}</td>
+                      </tr>
+                    {% endfor %}
+                </table>
+                <p><button type="submit" name="del" id="del">Удалить</button></p>
+            </form>
+        </td>
+    </tr>
+</table>
+<div class="clear"></div>
+
+{% endblock %}

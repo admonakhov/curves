@@ -1,0 +1,41 @@
+.clear	{
+	clear: both
+}
+
+.input {
+    width: 60%;
+    padding-left: 20%
+    margin-top: top;
+}
+
+.header {
+    background: rgba(0,0,0, .85)
+}
+
+.container > a {
+    color: grey
+}
+body {
+    background: rgba(0,0,0, .50)
+}
+
+.sn_plot   {
+    float:left;
+
+}
+
+.sn_data {
+    border: 1px solid grey;
+    border-spacing: 5%;
+}
+
+.results > td {
+    width:40%;
+    border-spacing: 5%;
+    empty-cells: hide;
+    padding-left: 10%;
+    vertical-align: top;
+}
+form {
+padding-left: 10%
+}
