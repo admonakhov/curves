@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect
+from flask import Flask, render_template, request
 import myplot
 import config
 
@@ -17,9 +17,11 @@ def sn_page():
     global stress
     global count
     if request.method == "POST":
+        print(request.form)
         if(('stress' in request.form) and ('count' in request.form)):
-            stress.append(int(request.form['stress']))
-            count.append(int(request.form['count']))
+            if request.form['count'] and request.form['stress']:
+                stress.append(int(request.form['stress']))
+                count.append(int(request.form['count']))
             p = myplot.sn(count, stress)
             return render_template("sncurve.html", stress=stress, count=count, lenght=range(len(stress)), plot=p)
         if 'del' in request.form:
