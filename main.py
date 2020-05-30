@@ -40,4 +40,4 @@ def sn_page():
         return render_template("sncurve.html", plot=config.empty)
 
 
-app.run(debug=True)
+app.run(host='192.168.100.13', port=8112)
