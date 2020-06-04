@@ -1,5 +1,5 @@
- var ctx = document.getElementById('plotarea').getContext('2d');
-    var chart = new Chart(ctx, {
+var ctx = document.getElementById('plotarea').getContext('2d');
+var chart = new Chart(ctx, {
     type: 'scatter',
     data: {
         datasets: [{

@@ -5,9 +5,10 @@ from browser import html, alert, ajax
 def add(ev):
     global stress
     global count
-    stress.append(doc['stress'].value)
-    count.append(doc['count'].value)
-    refresh(stress, count)
+    if doc['stress'].value and doc['count'].value:
+        stress.append(doc['stress'].value)
+        count.append(doc['count'].value)
+        refresh(stress, count)
 
 
 def clear(ev):
@@ -39,12 +40,13 @@ def on_complete(req):
 def load(ev):
     global stress
     global count
-    url = 'http://127.0.0.1:5000/sncurve_front/post'
-    req = ajax.Ajax()
-    req.bind('complete', on_complete)
-    req.open('POST', url, True)
-    req.set_header('content-type', 'application/x-www-form-urlencoded')
-    req.send({'stress': stress, 'count': count})
+    if (len(count) == len(stress)) and (len(count)>1):
+        url = 'http://127.0.0.1:5000/sncurve_front/post'
+        req = ajax.Ajax()
+        req.bind('complete', on_complete)
+        req.open('POST', url, True)
+        req.set_header('content-type', 'application/x-www-form-urlencoded')
+        req.send({'stress': stress, 'count': count})
 
 
 def refresh(a, b):
