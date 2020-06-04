@@ -29,18 +29,15 @@
             <td>
                 <p><button type="submit" name="load" id="load">Выгрузить файл</button></p>
             </td>
-            <td>
-                <p><button type="submit" name="reset" id="reset">Очистить</button></p>
-            </td>
         </tr>
     </table>
 </form>
 <table>
     <tr class="results">
-        <td width="50%">
+        <td>
             <img class ="sn_plot" src="data:image/png;base64, {{ plot }}">
         </td>
-        <td width="50%">
+        <td>
             <form method="post">
                 <table class="sn_data">
                     <tr class="sn_data">
@@ -64,5 +61,4 @@
     </tr>
 </table>
 <div class="clear"></div>
-
 {% endblock %}

@@ -1,0 +1,70 @@
+from browser import document as doc
+from browser import html, alert, ajax
+
+
+def add(ev):
+    global stress
+    global count
+    stress.append(doc['stress'].value)
+    count.append(doc['count'].value)
+    refresh(stress, count)
+
+
+def clear(ev):
+    pass
+
+
+def load(ev):
+    pass
+
+
+def delete(ev):
+    global stress
+    global count
+    for i in range(len(stress))[::-1]:
+        if doc[str(i)].checked:
+            stress.pop(int(i))
+            count.pop(int(i))
+    refresh(stress, count)
+
+
+def on_complete(req):
+    if req.status == 200 or req.status == 0:
+        txt = req.text
+    else:
+        txt = "error " + req.text
+    alert(txt)
+
+
+def load(ev):
+    global stress
+    global count
+    url = 'http://127.0.0.1:5000/sncurve_front/post'
+    req = ajax.Ajax()
+    req.bind('complete', on_complete)
+    req.open('POST', url, True)
+    req.set_header('content-type', 'application/x-www-form-urlencoded')
+    req.send({'stress': stress, 'count': count})
+
+
+def refresh(a, b):
+    global stress
+    global count
+    if len(a) == len(b):
+        doc['table_data'].clear()
+        for i in range(len(a)):
+            row = html.TR()
+            row <= html.TD(html.INPUT(type="checkbox", id=i))
+            row <= html.TD(i + 1)
+            row <= html.TD(stress[i])
+            row <= html.TD(count[i])
+            doc['table_data'] <= row
+
+
+# binds:
+doc['add'].bind("click", add)
+doc['del'].bind("click", delete)
+doc['load'].bind("click", load)
+# globals:
+stress = []
+count = []

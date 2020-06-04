@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Кривая усталости
+{% endblock %}
+
+{% block body %}
+
+<div class="input">
+    <h2>Введите данные:</h2>
+    <table class="input">
+        <tr>
+            <td>
+                <p> Напряжение: </p>
+            </td>
+            <td>
+               <p> <input type="number" name="stress" id="stress"></p>
+            </td>
+            <td>
+                <p> Долговечность: </p>
+            </td>
+            <td>
+                <p><input type="number" name="count" id="count"></p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <p><button type="submit" name="add" id="add">Добавить</button></p>
+            </td>
+            <td>
+                <p><button type="submit" name="load" id="load">Выгрузить файл</button></p>
+            </td>
+            <td>
+                <p><button type="submit" name="reset" id="reset">Очистить</button></p>
+            </td>
+        </tr>
+    </table>
+</div>
+
+<table class="out">
+    <tr id="results">
+        <td>
+            <canvas id="plotarea" width="700" height="400"></canvas>
+        </td>
+    <td>
+
+            <table class="sn_data" >
+                <thead>
+                <tr class="static">
+                    <th width="20px"></th>
+                    <th width="20px">#</th>
+                    <th >Напряжение, МПа</th>
+                    <th>Долговечность, цикл</th>
+                </tr>
+                </thead>
+                <tbody id="table_data"></tbody>
+            </table>
+
+            <p><button type="submit" name="del" id="del">Удалить</button></p>
+        </td>
+    </tr>
+</table>
+<script type="text/python" src="{{ url_for('static', filename='scripts/sncurve.bry')}}"></script>
+<script type= text/javascript src="{{ url_for('static', filename='scripts/snplot.js')}}"></script>
+
+{% endblock %}

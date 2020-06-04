@@ -4,7 +4,7 @@
 
 .input {
     width: 60%;
-    padding-left: 20%
+    padding-left: 10%
     margin-top: top;
 }
 
@@ -21,21 +21,20 @@ body {
 
 .sn_plot   {
     float:left;
-
 }
 
-.sn_data {
-    border: 1px solid grey;
-    border-spacing: 5%;
+img {
+    width:100%
 }
-
 .results > td {
     width:40%;
-    border-spacing: 5%;
-    empty-cells: hide;
     padding-left: 10%;
     vertical-align: top;
 }
 form {
 padding-left: 10%
+}
+.out {
+    padding-left: 10%;
+    vertical-align: top;
 }

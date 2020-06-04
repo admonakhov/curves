@@ -5,8 +5,16 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css')}}">
     <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap-4.5.0-dist/css/bootstrap.css')}}">
     <title>{% block title %}{% endblock %}</title>
+    <meta charset="utf-8">
+    <script type="text/javascript"
+        src="https://cdn.jsdelivr.net/npm/brython@3.8.9/brython.min.js">
+    </script>
+    <script type="text/javascript"
+        src="https://cdnjs.cloudflare.com/ajax/libs/brython/3.8.9/brython_stdlib.js">
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
 </head>
-<body>
+<body onload="brython()">
 <div class="header">
       <div class="container d-flex flex-column flex-md-row justify-content-between">
         <a class="py-2" href="/" aria-label="Product">
