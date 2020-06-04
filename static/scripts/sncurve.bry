@@ -41,7 +41,7 @@ def load(ev):
     global stress
     global count
     if (len(count) == len(stress)) and (len(count)>1):
-        url = 'http://127.0.0.1:5000/sncurve_front/post'
+        url = 'http://localhost:8112/sncurve_front/post'
         req = ajax.Ajax()
         req.bind('complete', on_complete)
         req.open('POST', url, True)
