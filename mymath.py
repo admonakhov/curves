@@ -2,15 +2,21 @@ import numpy as np
 
 
 def mean(arg):
-    return round(sum(arg) / len(arg), 2)
+    if len(arg)>1:
+        return round(sum(arg) / len(arg), 2)
+    else:
+        return arg
 
 
 def sko(arg):
-    m = mean(arg)
-    lsum = 0
-    for n in arg:
-        lsum += (n - m) ** 2
-    return round((lsum / (len(arg) - 1)) ** 0.5, 2)
+    if len(arg)>1:
+        m = mean(arg)
+        lsum = 0
+        for n in arg:
+            lsum += (n - m) ** 2
+        return round((lsum / (len(arg) - 1)) ** 0.5, 2)
+    else:
+        return 0
 
 
 def cv(arg):
@@ -42,17 +48,25 @@ def regression(x, y):
 
 
 def reg_data(X, Y):
-    if len(X)>1:
-        logX = list(map(np.log10, X))
-        logY = list(map(np.log10, Y))
-        cor = regression(logY, logX)
-        lgy_regr = sorted(set(logY))
-        lgx_regr = list(map(lambda x: cor['intercept'] + x * cor['slope'], lgy_regr))
-        y_regr = list(map(lambda i: 10 ** i, lgy_regr))
-        x_regr = list(map(lambda i: 10 ** i, lgx_regr))
-        data={}
-        data['x'] = x_regr
-        data['y'] = y_regr
-        data['intercept'] = cor['intercept']
-        data['slope'] = cor['slope']
-    return(data)
+    if len(X) > 1:
+        try:
+            data = {}
+            logX = list(map(np.log10, X))
+            logY = list(map(np.log10, Y))
+            cor = regression(logY, logX)
+            lgy_regr = sorted(set(logY))
+            lgx_regr = list(map(lambda x: cor['intercept'] + x * cor['slope'], lgy_regr))
+            y_regr = list(map(lambda i: 10 ** i, lgy_regr))
+            x_regr = list(map(lambda i: 10 ** i, lgx_regr))
+            data['x'] = x_regr
+            data['y'] = y_regr
+            data['intercept'] = cor['intercept']
+            data['slope'] = cor['slope']
+            return data
+        except:
+            print('Something wrong')
+            data['x'] = [0]
+            data['y'] = [0]
+            data['intercept'] = 0
+            data['slope'] = 0
+            return data

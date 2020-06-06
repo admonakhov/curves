@@ -1,5 +1,7 @@
 from browser import document as doc
-from browser import html, alert, ajax
+from browser import html, alert, ajax, window
+from browser.local_storage import storage
+import json
 
 
 def add(ev):
@@ -12,7 +14,15 @@ def add(ev):
 
 
 def clear(ev):
-    pass
+    global stress
+    global count
+    global reg
+    doc['table_data'].clear()
+    stress = []
+    count = []
+    reg['count']=[]
+    reg['stress'] = []
+    refresh(stress, count)
 
 
 def load(ev):
@@ -30,43 +40,53 @@ def delete(ev):
 
 
 def on_complete(req):
+    global reg
     if req.status == 200 or req.status == 0:
-        txt = req.text
-    else:
-        txt = "error " + req.text
-    alert(txt)
+        reg = json.loads(req.text)
+        plot()
+
+
 
 
 def load(ev):
+    pass
+
+def plot():
+    window.add(count, stress, len(count), doc['key'].value)
+    window.add_regression(reg['count'], reg['stress'], len(reg['count']), doc['key'].value)
+
+
+def refresh(a, b):
     global stress
     global count
-    if (len(count) == len(stress)) and (len(count)>1):
+    global reg
+    if (len(a) == len(b)):
         url = 'http://192.168.100.13:8112/sncurve_front/post'
         req = ajax.Ajax()
         req.bind('complete', on_complete)
         req.open('POST', url, True)
         req.set_header('content-type', 'application/x-www-form-urlencoded')
         req.send({'stress': stress, 'count': count})
+    doc['table_data'].clear()
+    for i in range(len(a)):
+        row = html.TR()
+        row <= html.TD(html.INPUT(type="checkbox", id=i))
+        row <= html.TD(i + 1)
+        row <= html.TD(stress[i], Class='y')
+        row <= html.TD(count[i], Class='x')
+        doc['table_data'] <= row
 
 
-def refresh(a, b):
-    global stress
-    global count
-    if len(a) == len(b):
-        doc['table_data'].clear()
-        for i in range(len(a)):
-            row = html.TR()
-            row <= html.TD(html.INPUT(type="checkbox", id=i))
-            row <= html.TD(i + 1)
-            row <= html.TD(stress[i])
-            row <= html.TD(count[i])
-            doc['table_data'] <= row
 
 
 # binds:
+doc['reset'].bind("click", clear)
 doc['add'].bind("click", add)
 doc['del'].bind("click", delete)
 doc['load'].bind("click", load)
+
 # globals:
 stress = []
 count = []
+reg = {}
+

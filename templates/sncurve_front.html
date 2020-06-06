@@ -11,6 +11,14 @@
     <table class="input">
         <tr>
             <td>
+                <p> Название: </p>
+            </td>
+            <td>
+                <p><input type="text" name="key" id="key"></p>
+            </td>
+        </tr>
+        <tr>
+            <td>
                 <p> Напряжение: </p>
             </td>
             <td>
@@ -22,6 +30,7 @@
             <td>
                 <p><input type="number" name="count" id="count"></p>
             </td>
+
         </tr>
         <tr>
             <td>
@@ -61,6 +70,6 @@
     </tr>
 </table>
 <script type="text/python" src="{{ url_for('static', filename='scripts/sncurve.bry')}}"></script>
-<script type= text/javascript src="{{ url_for('static', filename='scripts/snplot.js')}}"></script>
+<script type= text/javascript  src="{{ url_for('static', filename='scripts/snplot.js')}}"></script>
 
 {% endblock %}
