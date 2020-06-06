@@ -61,7 +61,7 @@ def refresh(a, b):
     global count
     global reg
     if (len(a) == len(b)):
-        url = 'http://192.168.100.13:8112/sncurve_front/post'
+        url = 'http://128.0.129.210:8112/sncurve_front/post'
         req = ajax.Ajax()
         req.bind('complete', on_complete)
         req.open('POST', url, True)
