@@ -1,11 +1,14 @@
-from flask import Flask, render_template, request, jsonify
-import myplot, mymath
+from flask import Flask, render_template, request, jsonify, send_file, redirect
+import myplot, mymath, config, mkxlsx
 import config
 import json
 
 app = Flask(__name__)
 stress = []
 count = []
+
+UPLOAD_FOLDER = '/'
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 
 @app.route('/')
@@ -15,13 +18,30 @@ def main_page():
 
 @app.route('/sncurve_front/post', methods=['POST'])
 def sn_curve_ret():
-    stress = list(map(int, request.form.getlist('stress')))
-    count = list(map(int, request.form.getlist('count')))
-    if (len(stress) == len(count)) and (len(stress) > 1):
-        d = mymath.reg_data(count, stress)
-        return json.dumps({'stress': d['y'], 'count': d['x'], 'intercept': d['intercept'], 'slope': d['slope']})
-    else:
-        return json.dumps({'stress': [], 'count': [], 'intercept': 0, 'slope': 0})
+    if request.form['key'] == 'regression':
+
+        stress = list(map(int, request.form.getlist('stress')))
+        count = list(map(int, request.form.getlist('count')))
+
+        if (len(stress) == len(count)) and (len(stress) > 1):
+            print(request.form['equation'])
+            if request.form['equation'] == 'pow':
+                d = mymath.pow_equation(count, stress)
+            if request.form['equation'] == 'mandell':
+                d = mymath.mandell_pow_equation(count, stress)
+            return json.dumps({'stress': d['y'], 'count': d['x'], 'intercept': d['intercept'], 'slope': d['slope'],
+                               'key': 'regression'})
+        else:
+            return json.dumps({'stress': [], 'count': [], 'intercept': 0, 'slope': 0, 'key': 'regression'})
+    elif request.form['key'] == 'mkxlsx':
+        d = json.loads(request.form['data'])
+        mkxlsx.mk_book(d)
+        return json.dumps({'key':'file'})
+
+
+@app.route('/xlsxdownload.xlsx', methods=['GET'])
+def xlsxdownload():
+    return send_file('tmp.xlsx')
 
 
 @app.route('/sncurve', methods=['POST', 'GET'])
@@ -55,6 +75,11 @@ def sn_page():
 @app.route('/sncurve_front', methods=['POST', 'GET'])
 def sn_page_new():
     return render_template("sncurve_front.html", plot=config.empty)
+
+
+@app.route('/resources', methods=['GET'])
+def resources():
+    return render_template("resources.html")
 
 
 app.run(host='192.168.100.13', port=8112)

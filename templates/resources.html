@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Resources
+{% endblock %}
+
+{% block body %}
+<div>
+    <h4>Используемые библиотеки:</h4>
+    <ul class="hrefs">
+        <li><a href="https://flask.palletsprojects.com">Flask</a></li>
+        <li><a href="https://brython.info/">Brython</a></li>
+        <li><a href="https://numpy.org/">NumPy</a></li>
+        <li><a href="https://matplotlib.org/">matplotlib</a></li>
+        <li><a href="https://www.chartjs.org/">Charts.js</a></li>
+        <li><a href="https://xlsxwriter.readthedocs.io/">XlsxWriter</a></li>
+    </ul>
+    <table border="1">
+        <tr>
+            <td>Ресурс доступен на <a href="https://github.com/admonakhov/curves">GitHub</a> </td>
+        </tr>
+        <tr>
+            <td>Email: a.d.monakhov@ya.ru</td>
+        </tr>
+    </table>
+</div>
+{% endblock %}

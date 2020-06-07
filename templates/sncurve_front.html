@@ -6,7 +6,7 @@
 
 {% block body %}
 
-<div class="input">
+<div>
     <h2>Введите данные:</h2>
     <table class="input">
         <tr>
@@ -16,6 +16,14 @@
             <td>
                 <p><input type="text" name="key" id="key"></p>
             </td>
+            <td><p> Уравнение: </p></td>
+            <td>
+                <select id="equation">
+                    <option value="pow">Степенная модель</option>
+                    <option value="mandell">Модель Менделла</option>
+                </select>
+            </td>
+            <td><button id="plus">+</button></td>
         </tr>
         <tr>
             <td>
@@ -34,7 +42,7 @@
         </tr>
         <tr>
             <td>
-                <p><button type="submit" name="add" id="add">Добавить</button></p>
+                <p><button type="submit"  name="add" id="add">Добавить</button></p>
             </td>
             <td>
                 <p><button type="submit" name="load" id="load">Выгрузить файл</button></p>
@@ -51,11 +59,11 @@
         <td>
             <canvas id="plotarea" width="700" height="400"></canvas>
         </td>
-    <td>
-
-            <table class="sn_data" >
+    <td class="sn_data">
+            <table><tr id="cases"></tr></table>
+            <table class="td_parent">
                 <thead>
-                <tr class="static">
+                <tr class="table_data">
                     <th width="20px"></th>
                     <th width="20px">#</th>
                     <th >Напряжение, МПа</th>
@@ -66,6 +74,7 @@
             </table>
 
             <p><button type="submit" name="del" id="del">Удалить</button></p>
+
         </td>
     </tr>
 </table>

@@ -1,82 +1,120 @@
 from browser import document as doc
 from browser import html, alert, ajax, window
-from browser.local_storage import storage
 import json
 
 
 def add(ev):
-    global stress
-    global count
+    global data
+    if len(data.keys()) == 0:
+        if not doc['key'].value:
+            doc['key'].value = 1
+        add_case()
+
     if doc['stress'].value and doc['count'].value:
-        stress.append(doc['stress'].value)
-        count.append(doc['count'].value)
-        refresh(stress, count)
+        data[is_checked()]['stress'].append(doc['stress'].value)
+        data[is_checked()]['count'].append(doc['count'].value)
+        refresh()
 
 
+def add_case(ev=0):
+    if doc['key'].value not in data.keys():
+        global it
+        doc['cases'] <= html.TD(
+            html.INPUT(type='radio', id=doc['key'].value, name='cs', checked=True) + doc['key'].value)
+        data[doc['key'].value] = {}
+        data[doc['key'].value]['stress'] = []
+        data[doc['key'].value]['count'] = []
+        data[doc['key'].value]['rstress'] = []
+        data[doc['key'].value]['rcount'] = []
+        data[doc['key'].value]['rcount'] = []
+        data[doc['key'].value]['slope'] = 0
+        data[doc['key'].value]['intercept'] = 0
+        data[doc['key'].value]['iterator'] = it
+        doc[doc['key'].value].bind('click', refresh)
+        it += 1
+        refresh()
+    else:
+        alert(doc['key'].value + " уже существует!")
+
+
+def is_checked():
+    global data
+    for key in data.keys():
+        if doc[key].checked:
+            return key
+
+
+# Очистка всего датафрейма
 def clear(ev):
-    global stress
-    global count
-    global reg
+    global data
+    key = is_checked()
     doc['table_data'].clear()
-    stress = []
-    count = []
-    reg['count']=[]
-    reg['stress'] = []
-    refresh(stress, count)
+    data[key]['stress'] = []
+    data[key]['count'] = []
+    data[key]['rstress'] = []
+    data[key]['rcount'] = []
+    data[key]['slope'] = 0
+    data[key]['intercept'] = 0
+    refresh()
 
 
 def load(ev):
-    pass
+    global data
+    req = ajax.Ajax()
+    req.bind('complete', on_complete)
+    req.open('POST', url, True)
+    req.set_header('content-type', 'application/x-www-form-urlencoded')
+    req.send({'data': json.dumps(data), 'key': 'mkxlsx'})
+    # window.location.replace("/xlsxdownload");
 
 
 def delete(ev):
-    global stress
-    global count
-    for i in range(len(stress))[::-1]:
+    global data
+    for i in range(len(data[is_checked()]['stress']))[::-1]:
         if doc[str(i)].checked:
-            stress.pop(int(i))
-            count.pop(int(i))
-    refresh(stress, count)
+            data[is_checked()]['stress'].pop(int(i))
+            data[is_checked()]['count'].pop(int(i))
+    refresh()
 
 
 def on_complete(req):
-    global reg
+    global data
     if req.status == 200 or req.status == 0:
-        reg = json.loads(req.text)
-        plot()
+        resp = json.loads(req.text)
+        if resp['key'] == 'regression':
+            data[is_checked()]['rcount'] = resp['count']
+            data[is_checked()]['rstress'] = resp['stress']
+            data[is_checked()]['slope'] = resp['slope']
+            data[is_checked()]['intercept'] = resp['intercept']
+            plot()
+        elif resp['key'] == 'file':
+            window.location.replace("/xlsxdownload.xlsx")
 
-
-
-
-def load(ev):
-    pass
 
 def plot():
-    window.add(count, stress, len(count), doc['key'].value)
-    window.add_regression(reg['count'], reg['stress'], len(reg['count']), doc['key'].value)
+    sample = data[is_checked()]
+    window.add(sample['count'], sample['stress'], len(sample['count']), is_checked(), sample['iterator'])
+    window.add_regression(sample['rcount'], sample['rstress'], len(sample['count']), is_checked(), sample['iterator'])
 
 
-def refresh(a, b):
-    global stress
-    global count
-    global reg
-    if (len(a) == len(b)):
-        url = 'http://128.0.129.210:8112/sncurve_front/post'
+def refresh(ev=0):
+    global data
+    global url
+    if len(data[is_checked()]['stress']) == len(data[is_checked()]['count']):
         req = ajax.Ajax()
         req.bind('complete', on_complete)
         req.open('POST', url, True)
         req.set_header('content-type', 'application/x-www-form-urlencoded')
-        req.send({'stress': stress, 'count': count})
+        req.send({'stress': data[is_checked()]['stress'], 'count': data[is_checked()]['count'],
+                  'key': 'regression', 'equation': doc['equation'].value})
     doc['table_data'].clear()
-    for i in range(len(a)):
+    for i in range(len(data[is_checked()]['stress'])):
         row = html.TR()
         row <= html.TD(html.INPUT(type="checkbox", id=i))
         row <= html.TD(i + 1)
-        row <= html.TD(stress[i], Class='y')
-        row <= html.TD(count[i], Class='x')
+        row <= html.TD(data[is_checked()]['stress'][i], Class='y', align='center')
+        row <= html.TD(data[is_checked()]['count'][i], Class='x', align='center')
         doc['table_data'] <= row
-
-
 
 
 # binds:
@@ -84,9 +122,9 @@ doc['reset'].bind("click", clear)
 doc['add'].bind("click", add)
 doc['del'].bind("click", delete)
 doc['load'].bind("click", load)
-
+doc['plus'].bind("click", add_case)
+doc['equation'].bind("click", refresh)
 # globals:
-stress = []
-count = []
-reg = {}
-
+data = {}
+url = 'http://128.0.129.210:8112/sncurve_front/post'
+it = 0

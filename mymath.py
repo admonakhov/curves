@@ -1,9 +1,28 @@
 import numpy as np
 
 
+def round_less_div(a):
+    i = 0
+    while a >= 10:
+        a /= 10
+        i += 1
+    a = int(a) - 1
+    a = a * (10 ** i)
+    return a
+
+
+def round_greater_div(a):
+    i = 0
+    while a >= 10:
+        a /= 10
+        i += 1
+    a = int(a) + 1
+    a = a * (10 ** i)
+    return a
+
 def mean(arg):
     if len(arg)>1:
-        return round(sum(arg) / len(arg), 2)
+        return sum(arg) / len(arg)
     else:
         return arg
 
@@ -14,13 +33,13 @@ def sko(arg):
         lsum = 0
         for n in arg:
             lsum += (n - m) ** 2
-        return round((lsum / (len(arg) - 1)) ** 0.5, 2)
+        return (lsum / (len(arg) - 1)) ** 0.5
     else:
         return 0
 
 
 def cv(arg):
-    return round(100 * sko(arg) / mean(arg), 2)
+    return round(100 * sko(arg) / mean(arg), 5)
 
 
 def median(arg):
@@ -34,6 +53,7 @@ def median(arg):
 def regression(x, y):
     cor = {}
     m_x = mean(x)
+
     m_y = mean(y)
     s_y = sko(y)
     s_x = sko(x)
@@ -41,13 +61,18 @@ def regression(x, y):
     for i in range(len(x)):
         cor['cov'] += (x[i] - m_x) * (y[i] - m_y)
     cor['cov'] /= (len(x) - 1)
-    cor['regression'] = cor['cov'] / (s_y * s_x)
-    cor['slope'] = (s_y / s_x) * (cor['regression'])
-    cor['intercept'] = m_y - (cor['slope'] * m_x)
+    try:
+        cor['regression'] = cor['cov'] / (s_y * s_x)
+        cor['slope'] = (s_y / s_x) * (cor['regression'])
+        cor['intercept'] = m_y - (cor['slope'] * m_x)
+    except Exception:
+        cor['regression'] = 0
+        cor['slope'] = 0
+        cor['intercept'] = 0
     return cor
 
 
-def reg_data(X, Y):
+def pow_equation(X, Y):
     if len(X) > 1:
         try:
             data = {}
@@ -57,6 +82,28 @@ def reg_data(X, Y):
             lgy_regr = sorted(set(logY))
             lgx_regr = list(map(lambda x: cor['intercept'] + x * cor['slope'], lgy_regr))
             y_regr = list(map(lambda i: 10 ** i, lgy_regr))
+            x_regr = list(map(lambda i: 10 ** i, lgx_regr))
+            data['x'] = x_regr
+            data['y'] = y_regr
+            data['intercept'] = cor['intercept']
+            data['slope'] = cor['slope']
+            return data
+        except:
+            print('Something wrong')
+            data['x'] = [0]
+            data['y'] = [0]
+            data['intercept'] = 0
+            data['slope'] = 0
+            return data
+
+def mandell_pow_equation(X, Y):
+    if len(X) > 1:
+        try:
+            data = {}
+            logX = list(map(np.log10, X))
+            cor = regression(Y, logX)
+            y_regr = sorted(set(Y))
+            lgx_regr = list(map(lambda x: cor['intercept'] + x * cor['slope'], y_regr))
             x_regr = list(map(lambda i: 10 ** i, lgx_regr))
             data['x'] = x_regr
             data['y'] = y_regr

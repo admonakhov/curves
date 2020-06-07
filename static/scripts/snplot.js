@@ -41,22 +41,31 @@ function makedataset(x,y,len)
 }
 
 
-function add(X, Y, len, key='S-N curve ')
+function add(X, Y, len, key='S-N curve ', id=0)
 {
-    chart.data.datasets[0].backgroundColor = colors[0];
+    chart.data.datasets[0].backgroundColor = colors[id*1];
     chart.data.datasets[0].data = makedataset(X,Y, len);
     chart.data.datasets[0].showLine = false;
     chart.data.datasets[0].label = key;
     chart.update();
 }
-function add_regression(X, Y, len, key='S-N curve ')
+function add_regression(X, Y, len, key='S-N curve ', id=0)
 {
-    chart.data.datasets[1].backgroundColor = colors[0];
-    chart.data.datasets[1].borderColor = colors[0];
+
+    chart.data.datasets[1].backgroundColor = colors[id*1];
+    chart.data.datasets[1].borderColor = colors[id*1];
     chart.data.datasets[1].borderWidth = 1;
     chart.data.datasets[1].pointStyle = 'line';
     chart.data.datasets[1].data = makedataset(X,Y, len);
     chart.data.datasets[1].label = key + ' regression';
     chart.update();
 
+}
+function together(X, Y, len, key='S-N curve ', id=0)
+{
+    let graph = chart.data.datasets;
+    graph.push({
+
+    })
+    chart.update();
 }

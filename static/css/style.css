@@ -1,13 +1,6 @@
 .clear	{
 	clear: both
 }
-
-.input {
-    width: 60%;
-    padding-left: 10%
-    margin-top: top;
-}
-
 .header {
     background: rgba(0,0,0, .85)
 }
@@ -23,18 +16,25 @@ body {
     float:left;
 }
 
-img {
-    width:100%
-}
-.results > td {
-    width:40%;
-    padding-left: 10%;
+.sn_data {
     vertical-align: top;
 }
-form {
-padding-left: 10%
+.content {
+    width: 90%;
+    margin-left: 5%;
+    padding-left: 2%;
+    height: 100%;
+    border: 4px double black;
+    }
+.table_data{
+    border: 1px solid black;
+    cell-spaceing: 10px;
 }
-.out {
-    padding-left: 10%;
-    vertical-align: top;
+.td_parent{
+    width: 400px;
+}
+.table_data td, thead {
+    width: 100px;
+    border: 1px solid black;
+    text-align: center;
 }
