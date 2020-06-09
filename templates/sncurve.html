@@ -5,9 +5,26 @@
 {% endblock %}
 
 {% block body %}
-<form method="post">
+
+<div>
     <h2>Введите данные:</h2>
     <table class="input">
+        <tr>
+            <td>
+                <p> Название: </p>
+            </td>
+            <td>
+                <p><input type="text" name="key" id="key"></p>
+            </td>
+            <td><p> Уравнение: </p></td>
+            <td>
+                <select id="equation">
+                    <option value="pow">Степенная модель</option>
+                    <option value="mandell">Модель Менделла</option>
+                </select>
+            </td>
+            <td><button id="plus">+</button></td>
+        </tr>
         <tr>
             <td>
                 <p> Напряжение: </p>
@@ -21,44 +38,47 @@
             <td>
                 <p><input type="number" name="count" id="count"></p>
             </td>
+
         </tr>
         <tr>
             <td>
-                <p><button type="submit" name="add" id="add">Добавить</button></p>
+                <p><button type="submit"  name="add" id="add">Добавить</button></p>
             </td>
             <td>
                 <p><button type="submit" name="load" id="load">Выгрузить файл</button></p>
             </td>
+            <td>
+                <p><button type="submit" name="reset" id="reset">Очистить</button></p>
+            </td>
         </tr>
     </table>
-</form>
-<table>
-    <tr class="results">
+</div>
+
+<table class="out">
+    <tr id="results">
         <td>
-            <img class ="sn_plot" src="data:image/png;base64, {{ plot }}">
+            <canvas id="plotarea" width="700" height="400"></canvas>
         </td>
-        <td class="sn_data">
-            <form method="post">
-                <table >
-                    <tr class="sn_data">
-                        <th width="20px"></th>
-                        <th width="20px"></th>
-                        <th >Напряжение, МПа</th>
-                        <th>Долговечность, цикл</th>
-                    </tr>
-                        {% for i in lenght %}
-                      <tr class="sn_data">
-                        <td><input type="checkbox" id={{i}} name={{i}}></td>
-                        <td>{{ (i+1) }}</td>
-                        <td>{{ stress[i] }}</td>
-                        <td>{{ count[i] }}</td>
-                      </tr>
-                    {% endfor %}
-                </table>
-                <p><button type="submit" name="del" id="del">Удалить</button></p>
-            </form>
+    <td class="sn_data">
+            <table><tr id="cases"></tr></table>
+            <table class="td_parent">
+                <thead>
+                <tr class="table_data">
+                    <th width="20px"></th>
+                    <th width="20px">#</th>
+                    <th >Напряжение, МПа</th>
+                    <th>Долговечность, цикл</th>
+                </tr>
+                </thead>
+                <tbody id="table_data"></tbody>
+            </table>
+
+            <p><button type="submit" name="del" id="del">Удалить</button></p>
+
         </td>
     </tr>
 </table>
-<div class="clear"></div>
+<script type="text/python" src="{{ url_for('static', filename='scripts/sncurve.bry')}}"></script>
+<script type= text/javascript  src="{{ url_for('static', filename='scripts/snplot.js')}}"></script>
+
 {% endblock %}

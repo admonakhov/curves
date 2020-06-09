@@ -25,7 +25,7 @@ def mk_book(data):
         chart_all = wb.add_chart({'type': 'scatter'})
         chart_all.set_x_axis({
             'name': 'Долговечность, Цикл',
-            'name_font': {'size': 14},
+            'name_font': {'size': 12},
             'log_base': 10,
             'major_gridlines': {
                 'visible': True,
@@ -34,7 +34,7 @@ def mk_book(data):
         })
         chart_all.set_y_axis({
             'name': 'Напряжения, МПа',
-            'name_font': {'size': 14}
+            'name_font': {'size': 12}
         })
         for ws in data.keys():
             chart = wb.add_chart({'type': 'scatter'})
@@ -64,8 +64,8 @@ def mk_book(data):
                 max_y = np.nan
             val = {'categories': '={0}!B2:B1000'.format(ws), 'values': '={0}!A2:A1000'.format(ws), 'name': ws,
                    'marker': {'type': markers[it], 'border': {'color': colors[it]}, 'fill': {'color': colors[it]}}}
-            val_reg = {'categories': '={0}!D2:D1000'.format(ws), 'values': '={0}!C2:E1000'.format(ws),
-                       'line': {'color': colors[it], 'name': ws}, 'name': ws + 'reg', 'marker': {'type': 'none'}}
+            val_reg = {'categories': '={0}!D2:D1000'.format(ws), 'marker': {'type': 'none'},
+                       'values': '={0}!C2:C1000'.format(ws), 'name': ws + ' reg', 'line': {'color': colors[it]}}
             it += 1
             if it == (len(markers) - 1) or it == (len(colors) - 1):
                 shuffle()
