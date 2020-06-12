@@ -32,7 +32,26 @@ def sn_curve_ret():
     elif request.form['key'] == 'mkxlsx':
         d = json.loads(request.form['data'])
         mkxlsx.mk_book(d)
-        return json.dumps({'key':'file'})
+        return json.dumps({'key': 'file'})
+
+
+@app.route('/sncurve', methods=['GET'])
+def sn_page():
+    return render_template("sncurve.html")
+
+
+@app.route('/sscurve', methods=['GET'])
+def ss_page():
+    return render_template("sscurve.html")
+
+
+@app.route('/sscurve', methods=['POST'])
+def ss_curve_pos():
+    for file in request.files:
+        f = request.files[file]
+    for i in f:
+        print(i)
+    return 'Good'
 
 
 @app.route('/xlsxdownload.xlsx', methods=['GET'])
@@ -40,16 +59,10 @@ def xlsxdownload():
     return send_file('tmp.xlsx')
 
 
-
-@app.route('/sncurve', methods=['POST', 'GET'])
-def sn_page_new():
-    return render_template("sncurve.html")
-
-
 @app.route('/resources', methods=['GET'])
 def resources():
     return render_template("resources.html")
 
 
-app.run(host=config.loc_ip, port=8112)
-#app.run()
+# app.run(host=config.loc_ip, port=8112)
+app.run()

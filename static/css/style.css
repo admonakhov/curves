@@ -38,3 +38,10 @@ body {
     border: 1px solid black;
     text-align: center;
 }
+.file_upload > td {
+    border-radius: 5px;
+    padding: 10px;
+    text-align: center;
+    font: 14pt bold;
+    color: #bbb;
+}

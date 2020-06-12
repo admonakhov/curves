@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Диаграмма деформирования
+{% endblock %}
+{% block body %}
+<table align="center">
+    <tr class="head">
+        <td></td>
+    </tr>
+    <tr class="visual">
+        <td id="data"></td>
+    </tr>
+    <tr >
+        <td class="file_upload">
+            <table>
+                <tr class="file_upload">
+                    <td>
+                        <form>
+                            <input id="choosefiles" type="file" multiple="multiple" />
+                        </form>
+                    </td>
+                    <td>
+                        <button id="upload">Загрузить</button>
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+</table>
+<script type="text/python" src="{{ url_for('static', filename='scripts/sscurve.bry')}}"></script>
+{% endblock %}

@@ -1,0 +1,18 @@
+from browser import  window, bind, html, alert, ajax
+from browser import document as doc
+
+def upload_ok(req):
+    print("all right")
+
+@bind("#upload", "click")
+def uploadfiles(event):
+    for f in doc["choosefiles"].files:
+        ajax.file_upload(url[0], f, oncomplete=upload_ok)
+
+
+
+
+
+
+#globals:
+url = ['http://127.0.0.1:5000/sscurve']
