@@ -110,6 +110,6 @@ def xlsxdownload():
 def resources():
     return render_template("resources.html")
 
-
-app.run(host=config.loc_ip, port=8112)
+app.debug = False
+app.run(host='192.168.100.13', port=8112)
 # app.run()
