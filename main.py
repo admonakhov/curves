@@ -111,5 +111,5 @@ def resources():
     return render_template("resources.html")
 
 
-# app.run(host=config.loc_ip, port=8112)
-app.run()
+app.run(host=config.loc_ip, port=8112)
+# app.run()
