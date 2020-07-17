@@ -45,3 +45,13 @@ body {
     font: 14pt bold;
     color: #bbb;
 }
+.ss_data {
+    vertical-align: top;
+    border: 1px solid black;
+    cell-spaceing: 10px;
+    font-size:12pt;
+    padding: 5px;
+}
+.ss_data >th {
+padding: 10px;}
+

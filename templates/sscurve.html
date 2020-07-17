@@ -14,6 +14,67 @@
     <tr >
         <td class="file_upload">
             <table>
+                <tr>
+                    <td colspan="2">
+                        <canvas id="plotarea" width="550" height="400"></canvas>
+                    </td>
+                    <td class="ss_data">
+                        <table>
+                                <tr>
+                                    <td>
+                                        Начало E
+                                    </td>
+                                    <td>
+                                        <p><input type="number" name="begin" id="begin" value="100" step="10"></p>
+                                    </td>
+                                    <td>
+                                        Конец E
+                                    </td>
+                                    <td>
+                                        <p><input type="number" name="end" id="end" value="200" step="10"></p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">
+                                        <input type="button" id="all_reload" value="Пересчитать для всех">
+                                    </td>
+                                    <td colspan="2">
+                                        <input type="button" id="reload" value="Пересчитать">
+                                    </td>
+                                </tr>
+                            </table>
+                            <table>
+                                <thead>
+                                    <tr class="ss_data">
+                                        <th width="20px"></th>
+                                        <th width="150">Образец</th>
+                                        <th>E, ГПа</th>
+                                        <th>&sigma;<sub>пц</sub>, МПа</th>
+                                        <th>&sigma;<sub>0,2</sub>, МПа</th>
+                                        <th>&sigma;<sub>в</sub>, МПа</th>
+                                        <th>&delta;, %</th>
+                                    </tr>
+
+                                </tr>
+                                </thead>
+                                <form>
+                                    <tbody id="table_data" class="ss_data"></tbody>
+                                </form>
+                                <form>
+                                    <tbody id="table_stat" class="ss_data"></tbody>
+                                </form>
+                            </table>
+                    </td>
+
+                </tr>
+                <tr>
+                    <td>
+                        <p>Масштаб: </p>
+                    </td>
+                    <td>
+                        <input type="range" id="scale" min="0.1" max="50">
+                    </td>
+                </tr>
                 <tr class="file_upload">
                     <td>
                         <form>
@@ -29,4 +90,5 @@
     </tr>
 </table>
 <script type="text/python" src="{{ url_for('static', filename='scripts/sscurve.bry')}}"></script>
+<script type= text/javascript  src="{{ url_for('static', filename='scripts/sscurve.js')}}"></script>
 {% endblock %}

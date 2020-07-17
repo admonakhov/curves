@@ -1,8 +1,23 @@
-from browser import  window, bind, html, alert, ajax
+from browser import window, bind, html, alert, ajax
 from browser import document as doc
+import json
+
+data = {}
+stats = {}
+
 
 def upload_ok(req):
-    print("all right")
+    if req.status == 200 or req.status == 0:
+        resp = json.loads(req.text)
+        if resp['status'] == 'uploaded':
+            mkdf(resp['properties'])
+
+
+def mkdf(properties):
+    global data
+    data = properties
+    add_keys()
+
 
 @bind("#upload", "click")
 def uploadfiles(event):
@@ -10,9 +25,117 @@ def uploadfiles(event):
         ajax.file_upload(url[0], f, oncomplete=upload_ok)
 
 
+def is_checked():
+    global data
+    for key in data.keys():
+        if doc[key].checked:
+            return key
+
+
+def add_keys():
+    global data
+    _key = ''
+    doc['table_data'].clear()
+    for key in data.keys():
+        row = html.TR()
+        row <= html.TD(html.INPUT(type="radio", name='samples', id=key))
+        row <= html.TD(key)
+        row <= html.TD(data[key]['modulus'], align='center', id='modulus' + key)
+        row <= html.TD(data[key]['proportional'], align='center', id='proportional' + key)
+        row <= html.TD(data[key]['yield'], align='center',id='yield' + key)
+        row <= html.TD(data[key]['ultimate'], align='center',id='ultimate' + key)
+        row <= html.TD(data[key]['extension'], align='center',id='extension' + key)
+        doc['table_data'] <= row
+        doc[key].bind("click", refresh)
+        if not _key:
+            _key = key
+    doc[_key].checked = 1
+    request_data()
+    request_stats()
+
+def add_stat():
+    global stats
+    stat = doc['table_stat']
+    stat.clear()
+    for st in ['Макс', 'Мин', 'Сред.', 'СКО', 'CV, %']:
+        row = html.TR()
+        row <= html.TD(st, colspan=2)
+        for prop in ['modulus', 'proportional', 'yield', 'ultimate', 'extension']:
+            row <= html.TD(round(stats[prop][st],1), align='center')
+        stat <= row
+
+
+def refresh_tab():
+    for key in data:
+        doc['modulus' + key].text = data[key]['modulus']
+        doc['proportional' + key].text = data[key]['proportional']
+        doc['yield' + key].text = data[key]['yield']
+        doc['ultimate' + key].text = data[key]['ultimate']
+        doc['extension' + key].text = data[key]['extension']
+
+def request_data():
+    req = ajax.Ajax()
+    req.bind('complete', on_complete)
+    req.open('POST', url, True)
+    req.set_header('content-type', 'application/x-www-form-urlencoded')
+    req.send({'sample': is_checked(), 'begin': doc['begin'].value, 'end': doc['end'].value, 'key': 'request_data'})
+
+
+def request_stats():
+    req = ajax.Ajax()
+    req.bind('complete', on_complete)
+    req.open('POST', url, True)
+    req.set_header('content-type', 'application/x-www-form-urlencoded')
+    req.send({'key': 'stats'})
 
 
 
+def on_complete(req):
+    global data
+    global stats
+    if req.status == 200 or req.status == 0:
+        resp = json.loads(req.text)
+        if resp['key'] == 'data':
+            strain = resp['strain']
+            stress = resp['stress']
+            strain_reg = resp['strain_reg']
+            stress_reg = resp['stress_reg']
+            data = resp['properties']
+            plot(strain, stress, strain_reg, stress_reg)
+            refresh_tab()
+            request_stats()
+        elif resp['key'] == 'properties':
+            data = resp['properties']
+            refresh_tab()
+            request_stats()
+        elif resp['key'] == 'stats':
+            stats = resp['stats']
+            add_stat()
 
-#globals:
+
+def reload_data(ev):
+    req = ajax.Ajax()
+    req.bind('complete', on_complete)
+    req.open('POST', url, True)
+    req.set_header('content-type', 'application/x-www-form-urlencoded')
+    req.send({'begin': doc['begin'].value, 'end': doc['end'].value, 'key': 'reload_data'})
+
+
+def plot(strain, stress, strain_reg, stress_reg):
+    window.add(strain, stress, len(strain), is_checked(), list(data.keys()).index(is_checked()))
+    window.add_regression(strain_reg, stress_reg, len(stress_reg))
+
+
+def refresh(ev):
+    request_data()
+    request_stats()
+
+def rescale(ev):
+    window.rescale(float(doc['scale'].value))
+
+doc['all_reload'].bind('click', reload_data)
+doc['reload'].bind('click', refresh)
+doc['scale'].bind('click', rescale)
+# globals:
+
 url = ['http://127.0.0.1:5000/sscurve']
