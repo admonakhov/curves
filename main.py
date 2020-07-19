@@ -3,7 +3,6 @@ import mymath, mkxlsx
 import os, json, re
 import readxlsx
 import numpy as np
-import matplotlib.pyplot as plt
 
 stress = []
 count = []

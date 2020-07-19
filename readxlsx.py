@@ -6,6 +6,7 @@ enames = ['strain', 'extension', 'deformation', '%', 'деформация']
 
 
 def mk_df(file):
+    print("here")
     stress = {}
     extension = {}
     wb = load_workbook(file)
