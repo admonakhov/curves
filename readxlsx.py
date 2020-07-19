@@ -20,7 +20,7 @@ def mk_df(file):
             offset += 1
         for row in (wb[sheetname]['A1:Z' + str(offset-1)]):
             for cell in row:
-                print(cell)
+                print(row)
                 if type(cell.value) is str:
                     for name in (snames + enames):
                         if name in cell.value.lower():
