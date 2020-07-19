@@ -2,6 +2,7 @@ import xlsxwriter
 import random
 import mymath
 import numpy as np
+import os
 
 
 colors = ['red', 'blue', 'green', 'yellow', 'magenta', 'purple', 'orange']
@@ -16,6 +17,11 @@ def allowed_file(extension):
 
 
 def mk_book(data):
+    try:
+        os.remove('tmp.xlsx')
+    except:
+        pass
+
     global colors
     global markers
     global it

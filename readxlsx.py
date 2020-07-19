@@ -2,8 +2,10 @@ from openpyxl import load_workbook
 from mymath import *
 import numpy as np
 
+
 snames = ['stress', 'mpa', 'напряжение', 'усилие']
 enames = ['strain', 'extension', 'deformation', '%', 'деформация']
+
 
 
 def mk_df(file):
@@ -18,7 +20,7 @@ def mk_df(file):
             offset += 1
         for row in (wb[sheetname]['A1:Z' + str(offset-1)]):
             for cell in row:
-                print(cell.value)
+                print(cell)
                 if type(cell.value) is str:
                     for name in (snames + enames):
                         if name in cell.value.lower():
