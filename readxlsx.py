@@ -18,7 +18,7 @@ def mk_df(file):
 
             offset += 1
         print(wb[sheetname]['A' + str(offset)].value)
-        print(type(wb[sheetname]['A' + str(offset)].value) not in dtypes)
+        print(type(wb[sheetname]['A' + str(offset)].value))
         for row in (wb[sheetname]['A1:Z' + str(offset)]):
             for cell in row:
                 if type(cell.value) is str:
