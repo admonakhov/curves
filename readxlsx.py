@@ -6,7 +6,9 @@ enames = ['strain', 'extension', 'deformation', '%', 'деформация']
 
 
 def mk_df(file):
+    global snames, enames
     print("Make data")
+    print(snames)
     stress = {}
     extension = {}
     wb = load_workbook(file)
@@ -29,7 +31,7 @@ def mk_df(file):
             stress[sheetname].append(wb[sheetname][stress_col + str(offset)].value)
             extension[sheetname].append(wb[sheetname][ext_col + str(offset)].value)
             offset += 1
-    print(snames)
+
     return stress, extension
 
 
