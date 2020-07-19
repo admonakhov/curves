@@ -15,11 +15,8 @@ def mk_df(file):
     for sheetname in wb.sheetnames:
         offset = 1
         while type(wb[sheetname]['A' + str(offset)].value) not in dtypes:
-
             offset += 1
-        print(wb[sheetname]['A' + str(offset)].value)
-        print(type(wb[sheetname]['A' + str(offset)].value))
-        for row in (wb[sheetname]['A1:Z' + str(offset)]):
+        for row in (wb[sheetname]['A1:Z' + str(offset-1)]):
             for cell in row:
                 if type(cell.value) is str:
                     for name in snames + enames:
