@@ -20,7 +20,7 @@ def mk_df(file):
             offset += 1
         for row in (wb[sheetname]['A1:Z' + str(offset-1)]):
             for cell in row:
-                print(row)
+                print(cell)
                 if type(cell.value) is str:
                     for name in (snames + enames):
                         if name in cell.value.lower():
@@ -28,7 +28,6 @@ def mk_df(file):
                                 stress_col = cell.column_letter
                             elif name in enames:
                                 ext_col = cell.column_letter
-        print(1)
         stress[sheetname] = []
         extension[sheetname] = []
         while type(wb[sheetname][stress_col + str(offset)].value) in dtypes:

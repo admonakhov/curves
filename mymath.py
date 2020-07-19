@@ -157,22 +157,27 @@ def s_s_prop(strain, stress, start, end, regression=linear_regression, nearest=s
     prop['intercept'] = reg['intercept']
     prop['modulus'] = round_1497(reg['slope'] / 10, 'modulus')  # Определение моудля упругости
     #     Определение предела текучести
-    n = stress.index(max(stress))
-    strain02 = []
-    stress02 = []
-    for i in range(len(stress[:n])):
-        stress02.append(stress[i])
-        strain02.append((-(stress[i]-reg['intercept'])/(reg['slope'])+strain[i]))
-    prop['yield'] = round_1497(stress02[strain02.index((nearest(0.2, strain02)))], 'stress')
+
     #     Определение максимальной пластеской деформации
     prop['extension'] = round_1497(max(strain) - (stress[-1] - reg['intercept']) / reg['slope'], 'strain')
     #     Определение предела пропорциональности
-    strainP = []
-    stressP = []
-    for i in range(len(stress[:n])):
-        stressP.append(stress[i])
-        strainP.append((-(stress[i]-reg['intercept'])/(reg['slope']*0.67))+strain[i])
-    prop['proportional'] = round_1497(stressP[strainP.index(min(strainP))],'stress')
+    try:
+        n = stress.index(max(stress))
+        strain02 = []
+        stress02 = []
+        for i in range(len(stress[:n])):
+            stress02.append(stress[i])
+            strain02.append((-(stress[i]-reg['intercept'])/(reg['slope'])+strain[i]))
+        prop['yield'] = round_1497(stress02[strain02.index((nearest(0.2, strain02)))], 'stress')
+        strainP = []
+        stressP = []
+        for i in range(len(stress[:n])):
+            stressP.append(stress[i])
+            strainP.append((-(stress[i]-reg['intercept'])/(reg['slope']*0.67))+strain[i])
+        prop['proportional'] = round_1497(stressP[strainP.index(min(strainP))],'stress')
+    except:
+        prop['yield'] = None
+        prop['proportional'] = None
     return prop
 
 
