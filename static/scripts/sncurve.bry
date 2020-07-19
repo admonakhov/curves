@@ -126,6 +126,6 @@ doc['plus'].bind("click", add_case)
 doc['equation'].bind("click", refresh)
 # globals:
 data = {}
-url = 'http://128.0.129.210:8112/sncurve/post'
+url = ['http://128.0.129.210:8112/sncurve/post']
 # url = 'http://127.0.0.1:5000/sncurve'
 it = 0

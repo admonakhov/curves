@@ -19,9 +19,8 @@ def mk_df(file):
         while type(wb[sheetname]['A' + str(offset)].value) not in dtypes:
             offset += 1
         for row in (wb[sheetname]['A1:Z' + str(offset-1)]):
-            for i in range(row):
-                cell = row[i]
-                print(cell)
+            for cell in row:
+                print(row)
                 if type(cell.value) is str:
                     for name in (snames + enames):
                         if name in cell.value.lower():
