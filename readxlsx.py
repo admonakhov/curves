@@ -15,7 +15,7 @@ def mk_df(file):
     for sheetname in wb.sheetnames:
         offset = 1
         while type(wb[sheetname]['A' + str(offset)].value) not in dtypes:
-            print(wb[sheetname]['A' + str(offset)].value)
+            print(type(wb[sheetname]['A' + str(offset)].value))
             offset += 1
         print(offset)
         for row in (wb[sheetname]['A1:Z' + str(offset)]):
