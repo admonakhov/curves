@@ -6,12 +6,12 @@ enames = ['strain', 'extension', 'deformation', '%', 'деформация']
 
 
 def mk_df(file):
-    global snames, enames
+    global snames, enames, dtypes
     print("Make data")
     stress = {}
     extension = {}
     wb = load_workbook(file)
-    print(wb.sheetnames)
+
     for sheetname in wb.sheetnames:
         offset = 1
         while type(wb[sheetname]['A' + str(offset)].value) not in dtypes:
@@ -25,6 +25,7 @@ def mk_df(file):
                                 stress_col = cell.column_letter
                             elif name in enames:
                                 ext_col = cell.column_letter
+        print(stress_col, ext_col)
         stress[sheetname] = []
         extension[sheetname] = []
         while type(wb[sheetname][stress_col + str(offset)].value) in dtypes:
