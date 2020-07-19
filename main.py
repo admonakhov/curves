@@ -54,6 +54,7 @@ def ss_page():
 def ss_curve_pos():
     global s, e, properties
     if 'filetosave' in request.files:
+        print('File is come!')
         for file in request.files:
             f = request.files[file]
             extension = re.findall(r'(?:\w+.)(\w+)', f.filename)[0]
