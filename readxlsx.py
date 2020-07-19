@@ -29,7 +29,7 @@ def mk_df(file):
             stress[sheetname].append(wb[sheetname][stress_col + str(offset)].value)
             extension[sheetname].append(wb[sheetname][ext_col + str(offset)].value)
             offset += 1
-    print(stress.keys())
+    print(snames)
     return stress, extension
 
 
