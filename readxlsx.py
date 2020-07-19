@@ -26,7 +26,7 @@ def mk_df(file):
                                 stress_col = cell.column_letter
                             elif name in enames:
                                 ext_col = cell.column_letter
-        print(stress_col, ext_col)
+        print(1)
         stress[sheetname] = []
         extension[sheetname] = []
         while type(wb[sheetname][stress_col + str(offset)].value) in dtypes:
