@@ -16,7 +16,6 @@ def mk_df(file):
     for sheetname in wb.sheetnames:
         offset = 1
         while type(wb[sheetname]['A' + str(offset)].value) not in dtypes:
-            print("here")
             offset += 1
         for row in (wb[sheetname]['A1:Z' + str(offset)]):
             for cell in row:
@@ -28,6 +27,7 @@ def mk_df(file):
                             elif name in enames:
                                 ext_col = cell.column_letter
         print(stress_col, ext_col)
+        print(offset)
         stress[sheetname] = []
         extension[sheetname] = []
         while type(wb[sheetname][stress_col + str(offset)].value) in dtypes:
