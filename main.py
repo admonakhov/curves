@@ -67,6 +67,7 @@ def ss_curve_pos():
                         return json.dumps({'key': 'no_data'})
                     for key in s.keys():
                         properties[key] = mymath.s_s_prop(e[key], s[key], 100, 200)
+                    print(properties.keys())
         return json.dumps({'properties': properties, 'status': 'uploaded'})
     elif request.form['key'] == 'request_data':
         properties[request.form['sample']] = mymath.s_s_prop(e[request.form['sample']], s[request.form['sample']],
