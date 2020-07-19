@@ -20,7 +20,7 @@ def mk_df(file):
             for cell in row:
                 print(cell.value)
                 if type(cell.value) is str:
-                    for name in snames + enames:
+                    for name in (snames + enames):
                         if name in cell.value.lower():
                             if name in snames:
                                 stress_col = cell.column_letter
