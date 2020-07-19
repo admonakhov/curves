@@ -52,7 +52,7 @@ def ss_page():
 
 @app.route('/sscurve', methods=['POST'])
 def ss_curve_pos():
-    global s, e ,properties
+    global s, e, properties
     if 'filetosave' in request.files:
         for file in request.files:
             f = request.files[file]
@@ -60,7 +60,10 @@ def ss_curve_pos():
             if f and mkxlsx.allowed_file(extension):
                 f.save(os.path.join(app.config['UPLOAD_FOLDER'], 'upload.' + extension))
                 if extension == 'xlsx':
-                    s, e = readxlsx.mk_df('upload.xlsx')
+                    try:
+                        s, e = readxlsx.mk_df('upload.xlsx')
+                    except:
+                        return json.dumps({'key': 'no_data'})
                     for key in s.keys():
                         properties[key] = mymath.s_s_prop(e[key], s[key], 100, 200)
         return json.dumps({'properties': properties, 'status': 'uploaded'})
@@ -69,14 +72,14 @@ def ss_curve_pos():
                                                              int(request.form['begin']), int(request.form['end']))
         stress = readxlsx.less_lenght(s[request.form['sample']], 100)
         strain = readxlsx.less_lenght(e[request.form['sample']], 100)
-        stress_reg = np.linspace(0, max(stress)*1.1, 10)
+        stress_reg = np.linspace(0, max(stress) * 1.1, 10)
         strain_reg = ((stress_reg - properties[request.form['sample']]['intercept']) \
-                     / properties[request.form['sample']]['slope'])
+                      / properties[request.form['sample']]['slope'])
         strain_reg = list(strain_reg)
         stress_reg = list(stress_reg)
 
-        return json.dumps({'properties': properties,'strain': strain, 'stress': stress,
-             'strain_reg': strain_reg, 'stress_reg': stress_reg, 'key': 'data'})
+        return json.dumps({'properties': properties, 'strain': strain, 'stress': stress,
+                           'strain_reg': strain_reg, 'stress_reg': stress_reg, 'key': 'data'})
     elif request.form['key'] == 'reload_data':
         for sample in s.keys():
             properties[sample] = mymath.s_s_prop(e[sample], s[sample], int(request.form['begin']),
@@ -101,6 +104,7 @@ def ss_curve_pos():
             stats[prop]['CV, %'] = mymath.round_step(mymath.cv(props[prop]), 0.1)
         return json.dumps({'stats': stats, 'key': 'stats'})
 
+
 @app.route('/xlsxdownload.xlsx', methods=['GET'])
 def xlsxdownload():
     return send_file('tmp.xlsx')
@@ -109,6 +113,7 @@ def xlsxdownload():
 @app.route('/resources', methods=['GET'])
 def resources():
     return render_template("resources.html")
+
 
 app.debug = False
 app.run(host='192.168.100.13', port=8112)

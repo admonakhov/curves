@@ -146,7 +146,7 @@ def simple_crosslines(lx1, ly1, lx2, ly2, nearest=simple_nearest, p = 0.005):
 
 
 
-def s_s_prop(strain, stress, start, end, regression=linear_regression, cross=simple_crosslines, nearest=simple_nearest):
+def s_s_prop(strain, stress, start, end, regression=linear_regression, nearest=simple_nearest):
     prop = {}
     prop['ultimate'] = round_1497(max(stress), 'stress')  # Определение предела прочности
     #     Индексы начала и конца определения Е модуля
@@ -156,22 +156,23 @@ def s_s_prop(strain, stress, start, end, regression=linear_regression, cross=sim
     prop['slope'] = reg['slope']
     prop['intercept'] = reg['intercept']
     prop['modulus'] = round_1497(reg['slope'] / 10, 'modulus')  # Определение моудля упругости
-    #     Определение нуля деформации
-    zero = -reg['intercept'] / reg['slope']
     #     Определение предела текучести
-    stress02 = np.linspace(0, max(stress))
-    strain02 = ((stress02-prop['intercept'])/prop['slope'])+0.2
-    prop['yield'] = round_1497(cross(strain, stress, strain02, stress02)[1], 'stress')
+    n = stress.index(max(stress))
+    strain02 = []
+    stress02 = []
+    for i in range(len(stress[:n])):
+        stress02.append(stress[i])
+        strain02.append((-(stress[i]-reg['intercept'])/(reg['slope'])+strain[i]))
+    prop['yield'] = round_1497(stress02[strain02.index((nearest(0.2, strain02)))], 'stress')
     #     Определение максимальной пластеской деформации
     prop['extension'] = round_1497(max(strain) - (stress[-1] - reg['intercept']) / reg['slope'], 'strain')
     #     Определение предела пропорциональности
-    n = stress.index(max(stress))
     strainP = []
     stressP = []
     for i in range(len(stress[:n])):
         stressP.append(stress[i])
-        strainP.append(((stress[i]-reg['intercept'])/(reg['slope']*0.67))-strain[i])
-    prop['proportional'] = round_1497(stressP[strainP.index(max(strainP))],'stress')
+        strainP.append((-(stress[i]-reg['intercept'])/(reg['slope']*0.67))+strain[i])
+    prop['proportional'] = round_1497(stressP[strainP.index(min(strainP))],'stress')
     return prop
 
 

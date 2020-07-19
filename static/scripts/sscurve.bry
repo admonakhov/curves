@@ -4,6 +4,7 @@ import json
 
 data = {}
 stats = {}
+strain  = 0
 
 
 def upload_ok(req):
@@ -73,6 +74,7 @@ def refresh_tab():
         doc['ultimate' + key].text = data[key]['ultimate']
         doc['extension' + key].text = data[key]['extension']
 
+
 def request_data():
     req = ajax.Ajax()
     req.bind('complete', on_complete)
@@ -93,6 +95,7 @@ def request_stats():
 def on_complete(req):
     global data
     global stats
+    global strain
     if req.status == 200 or req.status == 0:
         resp = json.loads(req.text)
         if resp['key'] == 'data':
@@ -111,6 +114,8 @@ def on_complete(req):
         elif resp['key'] == 'stats':
             stats = resp['stats']
             add_stat()
+        elif resp['key'] == 'no_data':
+            alert("Не уадлось загрузить данные")
 
 
 def reload_data(ev):
@@ -131,11 +136,13 @@ def refresh(ev):
     request_stats()
 
 def rescale(ev):
-    window.rescale(float(doc['scale'].value))
+    window.rescale(max(strain)*float(doc['scale'].value)/95)
 
 doc['all_reload'].bind('click', reload_data)
 doc['reload'].bind('click', refresh)
 doc['scale'].bind('click', rescale)
 # globals:
 
-url = ['http://192.168.100.13:8112/sscurve']
+
+url = ['http://128.0.129.210:8112/sscurve']
+# url = ['http://127.0.0.1:5000/sscurve']
