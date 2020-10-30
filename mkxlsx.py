@@ -4,7 +4,7 @@ import mymath
 import numpy as np
 import os
 
-
+os.chdir('/home/ant/Programms/curves/')
 colors = ['red', 'blue', 'green', 'yellow', 'magenta', 'purple', 'orange']
 markers = ['square', 'diamond', 'triangle', 'x', 'star', 'circle', 'plus']
 it = 0  # итератор цветов и маркеров

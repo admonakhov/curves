@@ -1,6 +1,5 @@
 from openpyxl import load_workbook
 from mymath import *
-import numpy as np
 
 
 snames = ['stress', 'mpa', 'напряжение', 'усилие']

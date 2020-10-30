@@ -144,5 +144,4 @@ doc['scale'].bind('click', rescale)
 # globals:
 
 
-url = ['http://128.0.129.210:8112/sscurve']
-# url = ['http://127.0.0.1:5000/sscurve']
+url = ['http://128.0.129.210:8889/sscurve']
